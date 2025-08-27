@@ -1,4 +1,6 @@
+using Helpers.RuntimeInfo;
 using Registrators;
+using Message;
 using VContainer;
 using VContainer.Unity;
 
@@ -6,15 +8,18 @@ public class GameLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        AudioRegistrator.Register(builder);
-        CamerasRegistrator.Register(builder);
-        ConfigRegistrator.Register(builder);
-        DataRegistrator.Register(builder);
-        GameplayRegistrator.Register(builder);
+        ConfigsRegistrator.Register(builder);
         GuiRegistrator.Register(builder);
-        HelpersRegistrator.Register(builder);
-        InputsRegistrator.Register(builder);
-
+        GameRegistrator.Register(builder);
+        DataRegistrator.Register(builder);
+        InputRegistrator.Register(builder);
+        AudioRegistrator.Register(builder);
+        AnalyticsRegistrator.Register(builder);
+        ScreenControllersRegistrator.Register(builder);
+        PopupControllersRegistrator.Register(builder);
+        
+        builder.Register<IMessageBroker, MessageBroker>(Lifetime.Singleton);
+        builder.Register<IRuntimeInformation, RuntimeInformation>(Lifetime.Singleton);
         builder.RegisterEntryPoint<Bootstrap>();
     }
 }

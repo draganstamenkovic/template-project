@@ -1,9 +1,14 @@
+using Gui.Screens.Controllers;
 using VContainer;
 
-public class ScreenControllersRegistrator
+namespace Registrators
 {
-    public static void Register(IContainerBuilder builder)
+    public class ScreenControllersRegistrator
     {
-        
+        public static void Register(IContainerBuilder builder)
+        {
+            builder.Register<LoadingScreenController>(Lifetime.Singleton).As<IScreenController>();
+            builder.Register<MainMenuScreenController>(Lifetime.Singleton).As<IScreenController>();
+        }
     }
 }

@@ -1,3 +1,7 @@
+using Data;
+using Data.Load;
+using Data.Save;
+using UnityEngine;
 using VContainer;
 
 namespace Registrators
@@ -6,7 +10,13 @@ namespace Registrators
     {
         public static void Register(IContainerBuilder builder)
         {
-            // register related stuff here
+            builder.Register<ISaveManager, SaveManager>(Lifetime.Singleton);
+            builder.Register<ILoadManager, LoadManager>(Lifetime.Singleton);
+            
+            /*
+            var gameData = Resources.Load<GameData>("Data/GameData");
+            builder.RegisterInstance(gameData).As(gameData.GetType()).AsImplementedInterfaces();
+            */
         }
     }
 }

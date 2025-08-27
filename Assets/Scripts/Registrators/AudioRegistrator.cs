@@ -1,3 +1,4 @@
+using Audio.Managers;
 using VContainer;
 
 namespace Registrators
@@ -6,7 +7,7 @@ namespace Registrators
     {
         public static void Register(IContainerBuilder builder)
         {
-            // register related stuff here
+            builder.Register<IAudioManager, AudioManager>(Lifetime.Scoped);
         }
     }
 }
