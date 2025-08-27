@@ -6,7 +6,7 @@ namespace Registrators
     {
         public static void Register(IContainerBuilder builder)
         {
-            // register gui related stuff here
+            ScreenControllersRegistrator.Register(builder);
         }
     }
 }
