@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEditor;
 using System.IO;
 using System.Text;
+using UnityEditor;
+using UnityEngine;
 
 public class ScreenCreatorTool : EditorWindow
 {
@@ -56,7 +56,7 @@ public class ScreenCreatorTool : EditorWindow
     }
     private void CreateViewScript(string name)
     {
-        string directoryPath = "Assets/Scripts/GUI/Screens/Views";
+        string directoryPath = "Assets/Scripts/Gui/Screens/Views";
         CreateDirectoryIfNotExists(directoryPath);
         
         string fileName = $"{name}ScreenView.cs";
@@ -69,7 +69,7 @@ public class ScreenCreatorTool : EditorWindow
     
     private void CreateControllerScript(string name)
     {
-        string directoryPath = "Assets/Scripts/GUI/Screens/Controllers";
+        string directoryPath = "Assets/Scripts/Gui/Screens/Controllers";
         CreateDirectoryIfNotExists(directoryPath);
         
         string fileName = $"{name}ScreenController.cs";
@@ -94,7 +94,7 @@ public class ScreenCreatorTool : EditorWindow
         sb.AppendLine("using UnityEngine;")
             .AppendLine("using UnityEngine.UI;")
             .AppendLine()
-            .AppendLine("namespace GUI.Screens.Views")
+            .AppendLine("namespace Gui.Screens.Views")
             .AppendLine("{")
             .AppendLine($"    public class {name}ScreenView : ScreenView")
             .AppendLine("    {")
@@ -112,14 +112,15 @@ public class ScreenCreatorTool : EditorWindow
     private string GenerateControllerScript(string name)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("using GUI.Screens.Views;")
+        sb.AppendLine("using Gui.Screens.Views;")
             .AppendLine("using UnityEngine;")
             .AppendLine()
-            .AppendLine("namespace GUI.Screens.Controllers")
+            .AppendLine("namespace Gui.Screens.Controllers")
             .AppendLine("{")
             .AppendLine($"    public class {name}ScreenController : IScreenController")
             .AppendLine("    {")
             .AppendLine($"        private {name}ScreenView _view;")
+            .AppendLine("        private IScreenManager _screenManager;")
             .AppendLine($"        public string ID => GuiScreenIds.{name}Screen;")
             .AppendLine()
             .AppendLine("        public void SetView(IScreenView view)")
@@ -127,9 +128,9 @@ public class ScreenCreatorTool : EditorWindow
             .AppendLine($"            _view = view as {name}ScreenView;")
             .AppendLine("        }")
             .AppendLine()
-            .AppendLine("        public void Initialize()")
+            .AppendLine("        public void Initialize(IScreenManager screenManager)")
             .AppendLine("        {")
-            .AppendLine($"           Debug.Log(\"Initializing {name} Screen\");")
+            .AppendLine($"           _screenManager = screenManager;")
             .AppendLine("            _view.OnShow = RegisterListeners;")
             .AppendLine("            _view.OnHidden = RemoveListeners;")
             .AppendLine("        }")
@@ -229,7 +230,7 @@ public class ScreenCreatorTool : EditorWindow
         
         // Search through all assemblies for the type with full namespace
         string[] possibleTypeNames = {
-            $"GUI.Screens.Views.{name}ScreenView",
+            $"Gui.Screens.Views.{name}ScreenView",
             $"{name}ScreenView"
         };
         
